@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Deepthi Kandregula!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
+		<link rel="stylesheet" type="text/css" href="styles/responsive.css">
+    	<style>
+    	destinations_container item_grid{
+			  float:left;
+			  margin-right:10px;
+			  max-width: 20%;
+			  max-height: 20%;
+		}
+		h1 {text-align: center;}
+        #top {
+                font-size: 36px;
+                color: White;
+				margin-bottom:30px;
+            }
+		  @media (min-width: 500px) {
+                h1::before {
+                    		content: "Travel Abroad!";
+                }
+            }
+
+            @media (max-width: 499px) {
+                h1::before {
+                    content: "Welcome!";
+                }
+            }
+         h3,p {text-align: center;
+                font-size: 20px;
+                color: black;
+				margin-bottom:30px;
+            }
+	    button {
+                margin:0 auto;
+				width: 300px;
+                height: 50px;
+                font-size: 25px;
+				font-color:black;
+                background-color: lightgray;
+				display: block;
+         }
+        button:hover {
+                background-color: orange;
+         }
+         body {
+                  background-repeat: no-repeat;
+                  background-attachment: fixed;
+                  background-size: 100% 100%;
+                  background-attachment:fixed; /*parallax effect*/
+	    }
+        body {font-family: Arial;}
+			/* Style the tab */
+			.tab {
+				overflow: hidden;
+				border: 1px solid #ccc;
+				background-color: #f1f1f1;
+			}
+
+			/* Style the buttons inside the tab */
+			.tab button {
+				 background-color: inherit;
+				 float: left;
+				 border: none;
+				 outline: none;
+				cursor: pointer;
+				padding: 14px 16px;
+				transition: 0.3s;
+				font-size: 17px;
+			}
+			/* Change background color of buttons on hover */
+			.tab button:hover {
+			 background-color: #ddd;
+			}
+			/* Create an active/current tablink class */
+			.tab button.active {
+			 background-color: #ccc;
+			}
+			/* Style the tab content */
+			.tabcontent {
+			display: none;
+			padding: 6px 12px;
+			border: 1px solid #ccc;
+			border-top: none;
+
+			}
+			/* Fade in tabs */
+			@-webkit-keyframes fadeEffect {
+				 from {opacity: 0;}
+				 to {opacity: 1;}
+			}
+
+			@keyframes fadeEffect {
+			  from {opacity: 0;}
+			 to {opacity: 1;}
+			}
+   </style>
+</head>
+<body>
+	<div class="top">
+		<h1></h1>
+	</div>
+	<div class="tab">
+  		<button class="tablinks" onclick="openCity(event, 'AboutMe')">AboutMe</button>
+		<button class="tablinks" onclick="openCity(event, 'Education')">Education</button>
+  		{% if user.is_authenticated %}
+			<button class="tablinks" onclick="openCity(event, 'Hello')">Hello,{{user.username}}</button>
+			<button onclick="window.location.href='accounts/logout'">Logout</button>
+
+		{% else %}
+			<button onclick="window.location.href='accounts/login'">Login</button>
+			<button onclick="window.location.href='accounts/register'">Register</button>
+		{% endif %}
+	</div>
+	<div id="AboutMe" class="tabcontent">
+  		<h3>AboutMyself</h3>
+  		<p>London is the capital city of England.</p>
+	</div>
+	<div id="Education" class="tabcontent">
+  		<h3>Education</h3>
+		 <p>Paris is the capital of France.</p>
+		<button>
+			<a href="Edu">More...</a>
+		</button>
+	</div>
+	<div id="Hello" class="tabcontent">
+  		<h2>Welcome to our website </h2>
+	</div>
+	<script>
+	function openCity(evt, cityName) {
+  		var i, tabcontent, tablinks;
+ 		tabcontent = document.getElementsByClassName("tabcontent");
+  		for (i = 0; i < tabcontent.length; i++) {
+  		  tabcontent[i].style.display = "none";
+ 		 }
+ 	 	tablinks = document.getElementsByClassName("tablinks");
+	 	for (i = 0; i < tablinks.length; i++) {
+    			tablinks[i].className = tablinks[i].className.replace(" active", "");
+ 	 	}
+ 	 	document.getElementById(cityName).style.display = "block";
+ 	 	evt.currentTarget.className += " active";
+	}
+	// Get the element with id="defaultOpen" and click on it
+	//document.getElementById("defaultOpen").click();
+	</script>
+   <br>
+		<button>
+			<a href="Click">Click me to know more!</a>
+		</button>
+	<div class="Destination">
+			<div class="container">
+				<div class="row">
+					<div class="col text-center">
+						<div class="section_subtitle"><h2>Destinations</h2></div>
+						<div class="section_title"><h2>Popular Destinations</h2></div>
+					</div>
+				</div>
+				<div class="row destinations_row">
+					<div class="col">
+						<div class="destinations_container item_grid">
+						{% for dest in dests %}
+							<!-- Destination -->
+							<div class="destination item">
+								<div class="destination_image">
+									<img src="{{dest.img.url}}" alt="">
+									{% if dest.offer %}
+									<div class="spec_offer text-center"><a href="#">Special Offer</a></div>
+									{% endif %}
+								</div>
+								<div class="destination_content">
+									<div class="destination_title"><a href="#">{{dest.name}}</a></div>
+									<div class="destination_subtitle">{{dest.desc}}</div>
+									<div class="destination_price">{{dest.price}}</div>
+								</div>
+							</div>
+						{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+	</body>
+	<!-- Footer -->
+<!--
+	<footer class="footer">
+		{% for dest in Destination %}
+		<div class="parallax_background parallax-window" data-parallax="scroll" data-image-src="{{dest.img}}" data-speed="0.8"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="newsletter">
+						<div class="newsletter_title_container text-center">
+							<div class="newsletter_title">Subscribe to our newsletter to get the latest trends & news</div>
+							<div class="newsletter_subtitle">Join our database NOW!</div>
+						</div>
+						<div class="newsletter_form_container">
+							<form action="#" class="newsletter_form d-flex flex-md-row flex-column align-items-start justify-content-between" id="newsletter_form">
+								<div class="d-flex flex-md-row flex-column align-items-start justify-content-between">
+									<div><input type="text" class="newsletter_input newsletter_input_name" id="newsletter_input_name" placeholder="Name" required="required"><div class="input_border"></div></div>
+									<div><input type="email" class="newsletter_input newsletter_input_email" id="newsletter_input_email" placeholder="Your e-mail" required="required"><div class="input_border"></div></div>
+								</div>
+								<div><button class="newsletter_button">subscribe</button></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row footer_contact_row">
+				<div class="col-xl-10 offset-xl-1">
+					<div class="row">
+
+						#Footer Contact Item
+						<div class="col-xl-4 footer_contact_col">
+							<div class="footer_contact_item d-flex flex-column align-items-center justify-content-start text-center">
+								<div class="footer_contact_icon"><img src="{{dest.img}}" alt=""></div>
+								<div class="footer_contact_title">give us a call</div>
+								<div class="footer_contact_list">
+									<ul>
+										<li>Office Landline: +44 5567 32 664 567</li>
+										<li>Mobile: +44 5567 89 3322 332</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						#Footer Contact Item
+						<div class="col-xl-4 footer_contact_col">
+							<div class="footer_contact_item d-flex flex-column align-items-center justify-content-start text-center">
+								<div class="footer_contact_icon"><img src="{{dest.img}}" alt=""></div>
+								<div class="footer_contact_title">come & drop by</div>
+								<div class="footer_contact_list">
+									<ul style="max-width:190px">
+										<li>4124 Barnes Street, Sanford, FL 32771</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						# Footer Contact Item
+						<div class="col-xl-4 footer_contact_col">
+							<div class="footer_contact_item d-flex flex-column align-items-center justify-content-start text-center">
+								<div class="footer_contact_icon"><img src="{{dest.img}}" alt=""></div>
+								<div class="footer_contact_title">send us a message</div>
+								<div class="footer_contact_list">
+									<ul>
+										<li>youremail@gmail.com</li>
+										<li>Office@yourbusinessname.com</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</footer> -->
+</html>
